@@ -5,10 +5,11 @@
  */
 package ranking;
 
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  *
@@ -16,9 +17,9 @@ import java.util.Map;
  */
 public final class CompanyVotes {
 
-    private static final String FAV = "fav";
-    private static final String UNFAV = "unfav";
-    private static final String NEUTRAL = "neutral";
+    public static final String FAV = "fav";
+    public static final String UNFAV = "unfav";
+    public static final String NEUTRAL = "neutral";
 
     private String companyName;
 
@@ -34,6 +35,7 @@ public final class CompanyVotes {
         this.votes = votes;
         countInvalidAnswers();
         removeInvalidAnswers();
+        rankingVotes();
     }
 
     public String getCompanyName() {
@@ -74,10 +76,28 @@ public final class CompanyVotes {
 
     public void rankingVotes() {
         votes.forEach(vt -> {
-            if (!percentStatusById.containsKey(vt.getId())) {
-                
+            int key = vt.getId();
+            if (!percentStatusById.containsKey(key)) {
+                percentStatusById.put(key, new TreeMap<>());
+            }
+            String status = getSelectStatus(vt);
+            Map<String, Double> statusMap = percentStatusById.get(key);
+            if (statusMap.containsKey(status)) {
+                double value = statusMap.get(status) + 1;
+                statusMap.replace(status, value);
+            } else {
+                statusMap.put(status, 1d);
             }
         });
     }
 
+    public String getSelectStatus(Vote vt) {
+        if (vt.getChoise() < 2) {
+            return FAV;
+        } else if (vt.getChoise() == 2) {
+            return NEUTRAL;
+        } else {
+            return UNFAV;
+        }
+    }
 }

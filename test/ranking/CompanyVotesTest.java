@@ -5,7 +5,7 @@
  */
 package ranking;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -17,28 +17,32 @@ import static org.junit.Assert.*;
 public class CompanyVotesTest {
 
     @Test
+    public void testSelectStatus() {
+        CompanyVotes companyVotes = new CompanyVotes("My Bank", getVotes());
+        Vote vote1 = companyVotes.getVotes().get(1);
+        Vote vote2 = companyVotes.getVotes().get(4);
+        Vote vote3 = companyVotes.getVotes().get(2);
+        assertEquals(CompanyVotes.FAV, companyVotes.getSelectStatus(vote1));
+        assertEquals(CompanyVotes.NEUTRAL, companyVotes.getSelectStatus(vote2));
+        assertEquals(CompanyVotes.UNFAV, companyVotes.getSelectStatus(vote3));
+    }
+
+    @Test
     public void testRemoveInvalidAnswers() {
         CompanyVotes companyVotes = new CompanyVotes("My Bank", getVotes());
-        int expected = 4;
+        int expected = 9;
         assertEquals(expected, companyVotes.getVotes().size());
     }
 
     @Test
     public void testCountInvalidAnswers() {
         CompanyVotes companyVotes = new CompanyVotes("My Bank", getVotes());
-        int expected = 2;
+        int expected = 1;
         assertEquals(expected, companyVotes.getInvalidAnswers());
     }
 
     private List<Vote> getVotes() {
-        List<Vote> votes = new ArrayList<>();
-        votes.add(new Vote(1, 0));
-        votes.add(new Vote(2, 0));
-        votes.add(new Vote(3, 0));
-        votes.add(new Vote(4, 0));
-        votes.add(new Vote(1, 5));
-        votes.add(new Vote(2, -1));
-        return votes;
+        return new FileToVotes().convertFile(new File("files/mybank_zqweSt.txt"));
     }
 
 }
