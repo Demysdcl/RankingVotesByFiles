@@ -9,29 +9,29 @@ package ranking;
  *
  * @author demys
  */
-public class Vote {
-    
-    private int id;
-    private int choise;
-    
+public class Vote implements Comparable<Vote> {
+
+    private Integer id;
+    private Integer choise;
+
     public Vote(int id, int choice) {
         this.id = id;
         this.choise = choice;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getChoise() {
+    public Integer getChoise() {
         return choise;
     }
 
-    public void setChoise(int choise) {
+    public void setChoise(Integer choise) {
         this.choise = choise;
     }
 
@@ -59,7 +59,10 @@ public class Vote {
         }
         return true;
     }
-    
-    
-    
+
+    @Override
+    public int compareTo(Vote o) {
+        return o.getChoise().compareTo(choise);
+    }
+
 }

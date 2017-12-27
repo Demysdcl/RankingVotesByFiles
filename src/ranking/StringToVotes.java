@@ -7,20 +7,21 @@ package ranking;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
  *
  * @author demys
  */
-public class FileToVotes {
+public class StringToVotes {
 
-    public List<Vote> convertFile(File file) {
-        List<String> lines = new FileUtil().readFile(file);
+    public List<Vote> convertLines(List<String> lines) {
+        lines.remove(0);
         List<Vote> votes = new ArrayList<>();
         lines.forEach(line -> votes.add(convertLine(line)));
         votes.removeIf(vt -> vt == null);
+        Collections.sort(lines);
         return votes;
     }
 

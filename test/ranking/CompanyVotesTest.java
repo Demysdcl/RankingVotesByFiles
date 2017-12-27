@@ -17,6 +17,22 @@ import static org.junit.Assert.*;
 public class CompanyVotesTest {
 
     @Test
+    public void testRankingVotes() {
+        CompanyVotes companyVotes = new CompanyVotes("My Bank", getVotes());
+        int mapSizeExpect = 5;
+        assertEquals(mapSizeExpect, companyVotes.getPercentStatusById().size());
+
+        System.out.println("Totals");
+        companyVotes.getTotalById().entrySet().forEach(et -> System.out.println(et));
+        System.out.println("");
+        System.out.println("Totals Status");
+        companyVotes.getTotalStatusById().entrySet().forEach(et -> System.out.println(et));
+        System.out.println("");
+        System.out.println("Percents");
+        companyVotes.getPercentStatusById().entrySet().forEach(et -> System.out.println(et));
+    }
+
+    @Test
     public void testSelectStatus() {
         CompanyVotes companyVotes = new CompanyVotes("My Bank", getVotes());
         Vote vote1 = companyVotes.getVotes().get(1);
@@ -42,7 +58,9 @@ public class CompanyVotesTest {
     }
 
     private List<Vote> getVotes() {
-        return new FileToVotes().convertFile(new File("files/mybank_zqweSt.txt"));
+        File file = new File("files/mybank_zqweSt.txt");
+        List<String> lines = new FileUtil().readFile(file);
+        return new StringToVotes().convertLines(lines);
     }
 
 }

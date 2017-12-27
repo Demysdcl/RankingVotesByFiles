@@ -5,7 +5,6 @@ import java.io.File;
 import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.Test;
-import ranking.FileUtil;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

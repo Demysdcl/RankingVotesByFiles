@@ -13,19 +13,20 @@ public class FileToVoteTest {
 
     @Test
     public void cantNull() {
-        Vote vote = new FileToVotes().convertLine("1 2");
+        Vote vote = new StringToVotes().convertLine("1 2");
         assertNotNull(vote);
     }
 
     @Test(expected = NumberFormatException.class)
     public void throwsFormatExceptin() {
-        new FileToVotes().convertLine("12 A");
+        new StringToVotes().convertLine("12 A");
     }
     
     @Test
     public void testConvertFile() {
         File file = new File("files/mybank_zqweSt.txt");
-        List<Vote> votes = new FileToVotes().convertFile(file);
+        List<String> lines = new FileUtil().readFile(file);
+        List<Vote> votes = new StringToVotes().convertLines(lines);
         int expected = 10;
         assertEquals(expected, votes.size());
         assertNotNull(votes.get(0));
